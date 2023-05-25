@@ -2,6 +2,7 @@ const worksUrl = "http://localhost:5678/api/works";
 const categoriesUrl = "http://localhost:5678/api/categories";
 const gallery = document.querySelector(".gallery");
 const filtre = document.querySelector(".filtres");
+const loginLink = document.getElementById("login");
 
 let works;
 async function getWorks() {
@@ -31,6 +32,8 @@ function displayWorks(works) {
     figureElement.appendChild(imageElement);
     figureElement.appendChild(figcaptionElement);
   }
+
+  displayEditionMode();
 }
 
 function filterWorks(event) {
@@ -61,4 +64,24 @@ function displayCategories(categories) {
   }
 }
 
+function displayEditionMode() {
+  if (localStorage.getItem("token") !== null) {
+    const editionBar = document.getElementById("mode-edition");
+    const modifierBtn = document.getElementById("modifier-btn");
+    const modifierBtnProjet = document.getElementById("modifier-btn-projet");
+    editionBar.style.display = "flex";
+    modifierBtn.style.display = "block";
+    modifierBtnProjet.style.display = "block";
+    loginLink.innerHTML = "Logout";
+    loginLink.href = "#";
+    filtre.style.visibility = "hidden";
+  }
+}
+
+function clearLocalStorage() {
+  localStorage.clear();
+  location.reload();
+}
+
 filtre.addEventListener("click", filterWorks);
+loginLink.addEventListener("click", clearLocalStorage);

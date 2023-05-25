@@ -10,19 +10,22 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
 		rel="stylesheet">
 	<meta name="description" content="">
+	<script src="https://kit.fontawesome.com/2b7365aed8.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 
 <body>
+	<div id="mode-edition">
+		<a href="#"><i class="fa-regular fa-pen-to-square"></i>Mode édition</a>
+		<button>publier les changements</button>
+	</div>
 	<header>
 		<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 		<nav>
 			<ul>
 				<li>projets</li>
 				<li>contact</li>
-				<a href="login.html">
-					<li>login</li>
-				</a>
+				<li><a href="login.html" id="login">login</a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>
@@ -31,6 +34,7 @@
 		<section id="introduction">
 			<figure>
 				<img src="./assets/images/sophie-bluel.png" alt="">
+				<button id="modifier-btn"><i class="fa-regular fa-pen-to-square"></i>Modifier</button>
 			</figure>
 			<article>
 				<h2>Designer d'espace</h2>
@@ -44,7 +48,10 @@
 			</article>
 		</section>
 		<section id="portfolio">
-			<h2>Mes Projets</h2>
+			<div class="portfolio-title">
+				<h2>Mes Projets</h2>
+				<button id="modifier-btn-projet"><i class="fa-regular fa-pen-to-square"></i>Modifier</button>
+			</div>
 			<div class="filtres">
 			</div>
 			<div class="gallery">

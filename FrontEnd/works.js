@@ -2,7 +2,10 @@ const worksUrl = "http://localhost:5678/api/works";
 const categoriesUrl = "http://localhost:5678/api/categories";
 const gallery = document.querySelector(".gallery");
 const filtre = document.querySelector(".filtres");
+
 const loginLink = document.getElementById("login");
+
+const modalBtn = document.getElementById("modifier-btn-projet");
 
 let works;
 async function getWorks() {
@@ -84,4 +87,11 @@ function clearLocalStorage() {
 }
 
 filtre.addEventListener("click", filterWorks);
+
 loginLink.addEventListener("click", clearLocalStorage);
+
+function displayModal(event) {
+  event.preventDefault();
+}
+
+modalBtn.addEventListener("click", displayModal);

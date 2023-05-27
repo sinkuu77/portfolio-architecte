@@ -113,11 +113,20 @@ function displayModal(event) {
     const modalImg = document.createElement("img");
     modalImg.src = modalWorks.imageUrl;
     modalImg.alt = modalWorks.title;
+    const modalIcons = document.createElement("div");
+    modalIcons.className = "icons";
+    const arrowsIcon = document.createElement("i");
+    arrowsIcon.className = "fa-solid fa-arrows-up-down-left-right";
+    const trashIcon = document.createElement("i");
+    trashIcon.className = "fa-solid fa-trash-can";
     const modalEditor = document.createElement("figcaption");
     modalEditor.innerText = "éditer";
 
     modalGallery.appendChild(modalFigure);
     modalFigure.appendChild(modalImg);
+    modalFigure.appendChild(modalIcons);
+    modalIcons.appendChild(arrowsIcon);
+    modalIcons.appendChild(trashIcon);
     modalFigure.appendChild(modalEditor);
   }
 }

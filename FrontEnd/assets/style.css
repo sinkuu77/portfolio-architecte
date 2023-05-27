@@ -353,10 +353,8 @@ a:hover {
 #modal-wrapper {
 	overflow: auto;
 	position: absolute;
-	width: 630px;
-	height: 731px;
-	max-width: calc(100vw - 105px);
-	max-height: calc(100vh - 60px);
+	width: 420px;
+	height: 611px;
 	padding: 60px 105px;
 	border-radius: 10px;
 	background-color: #ffffff;
@@ -388,6 +386,18 @@ hr {
 	font-weight: 400;
 	font-family: 'Work Sans';
 	color: #000000;
+	padding-bottom: 20px;
+}
+
+.modal-gallery {
+	display: flex;
+	gap: 7px;
+	flex-wrap: wrap;
+}
+
+.modal-gallery figure img {
+	width: 78px;
+	height: 104px;
 }
 
 .modalcontents {
@@ -397,7 +407,7 @@ hr {
 	align-items: center;
 	gap: 23px;
 	position: relative;
-	bottom: -550px;
+	bottom: -40px;
 }
 
 .modalcontents a {

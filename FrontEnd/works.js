@@ -6,6 +6,8 @@ const filtre = document.querySelector(".filtres");
 const loginLink = document.getElementById("login");
 
 const modalBtn = document.getElementById("modifier-btn-projet");
+const modal = document.getElementById("modal");
+const modalGallery = document.querySelector(".modal-gallery");
 
 let works;
 async function getWorks() {
@@ -90,8 +92,47 @@ filtre.addEventListener("click", filterWorks);
 
 loginLink.addEventListener("click", clearLocalStorage);
 
+let modalValue = null;
+
 function displayModal(event) {
   event.preventDefault();
+  modalValue = document.querySelector(event.target.getAttribute("href"));
+  modalValue.style.display = "flex";
+  modalValue.removeAttribute("aria-hidden");
+  modalValue.setAttribute("aria-modal", "true");
+
+  modalValue.addEventListener("click", closeModal);
+  const modalCloseBtn = document.querySelector(".fa-xmark");
+  modalCloseBtn.addEventListener("click", closeModal);
+  const propagation = document.querySelector(".stop-propagation");
+  propagation.addEventListener("click", stopPropagation);
+
+  for (i = 0; i < works.length; i++) {
+    const modalWorks = works[i];
+    const modalFigure = document.createElement("figure");
+    const modalImg = document.createElement("img");
+    modalImg.src = modalWorks.imageUrl;
+    modalImg.alt = modalWorks.title;
+    const modalEditor = document.createElement("figcaption");
+    modalEditor.innerText = "éditer";
+
+    modalGallery.appendChild(modalFigure);
+    modalFigure.appendChild(modalImg);
+    modalFigure.appendChild(modalEditor);
+  }
+}
+
+function closeModal(event) {
+  event.preventDefault();
+  modalValue.style.display = "none";
+  modalValue.setAttribute("aria-hidden", "true");
+  modalValue.removeAttribute("aria-modal");
+  modalValue = null;
+  modalGallery.innerHTML = "";
+}
+
+function stopPropagation(event) {
+  event.stopPropagation();
 }
 
 modalBtn.addEventListener("click", displayModal);

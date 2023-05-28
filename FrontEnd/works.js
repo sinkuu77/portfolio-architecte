@@ -119,6 +119,8 @@ function displayModal(event) {
     arrowsIcon.className = "fa-solid fa-arrows-up-down-left-right";
     const trashIcon = document.createElement("i");
     trashIcon.className = "fa-solid fa-trash-can";
+    trashIcon.addEventListener("click", () => deleteWorks(modalImg));
+
     const modalEditor = document.createElement("figcaption");
     modalEditor.innerText = "éditer";
 
@@ -145,3 +147,25 @@ function stopPropagation(event) {
 }
 
 modalBtn.addEventListener("click", displayModal);
+
+function deleteWorks(modalImg) {
+  let id;
+  for (i = 0; i < works.length; i++) {
+    let clickedSource = modalImg.src;
+    let comparedSource = works[i].imageUrl;
+    if (clickedSource == comparedSource) {
+      id = works[i].id;
+      fetch(worksUrl + "/" + id, {
+        method: "DELETE",
+        headers: {
+          Accept: "application.json, */*",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }).then((response) => {
+        if (response.ok) {
+          response.preventDefault();
+        }
+      });
+    }
+  }
+}

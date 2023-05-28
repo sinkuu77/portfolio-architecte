@@ -367,6 +367,10 @@ a:hover {
 	right: 35px;
 }
 
+#modal-wrapper .fa-xmark:hover {
+	cursor: pointer;
+}
+
 #modal-wrapper input {
 	border: none;
 	width: 237px;
@@ -419,8 +423,13 @@ hr {
 	font-size: 14px;
 }
 
+.fa-trash-can:hover {
+	cursor: pointer;
+}
+
 .icons .fa-arrows-up-down-left-right {
 	opacity: 0;
+	transition: all 0.3s ease-in-out;
 }
 
 .modal-gallery figure:hover>.icons .fa-arrows-up-down-left-right {

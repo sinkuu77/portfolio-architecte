@@ -110,7 +110,7 @@ function displayModal(event) {
   for (i = 0; i < works.length; i++) {
     const modalWorks = works[i];
     const modalFigure = document.createElement("figure");
-    const modalImg = document.createElement("img");
+    let modalImg = document.createElement("img");
     modalImg.src = modalWorks.imageUrl;
     modalImg.alt = modalWorks.title;
     const modalIcons = document.createElement("div");
@@ -119,7 +119,9 @@ function displayModal(event) {
     arrowsIcon.className = "fa-solid fa-arrows-up-down-left-right";
     const trashIcon = document.createElement("i");
     trashIcon.className = "fa-solid fa-trash-can";
-    trashIcon.addEventListener("click", () => deleteWorks(modalImg));
+    trashIcon.addEventListener("click", (event) =>
+      deleteWorks(modalImg, event)
+    );
 
     const modalEditor = document.createElement("figcaption");
     modalEditor.innerText = "éditer";
@@ -148,7 +150,8 @@ function stopPropagation(event) {
 
 modalBtn.addEventListener("click", displayModal);
 
-function deleteWorks(modalImg) {
+function deleteWorks(modalImg, event) {
+  event.stopPropagation();
   let id;
   for (i = 0; i < works.length; i++) {
     let clickedSource = modalImg.src;
@@ -163,7 +166,7 @@ function deleteWorks(modalImg) {
         },
       }).then((response) => {
         if (response.ok) {
-          response.preventDefault();
+          console.log(response);
         }
       });
     }

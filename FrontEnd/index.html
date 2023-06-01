@@ -67,8 +67,40 @@
 					<div class="modalcontents">
 						<hr>
 
-						<input type="button" name="Ajouter une photo" value="Ajouter une photo">
+						<input class="add-photo" type="button" name="Ajouter une photo" value="Ajouter une photo">
 						<p id="delete-all">Supprimer la galerie</p>
+					</div>
+				</div>
+				<div id="editor-wrapper" class="stop-propagation">
+					<div class="editor-icons">
+						<i class="fa-solid fa-arrow-left-long"></i>
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+
+					<h2 id="editortitle">Ajout photo</h2>
+					<div class="editor-formulaire">
+						<div class="editor-image">
+							<i class="fa-regular fa-image"></i>
+							<div class="filebox">
+								<label for="image-upload">+ Ajouter photo</label>
+								<input type="file" id="image-upload" name="image-upload" accept=".jpg, .png" required>
+							</div>
+							<p>jpg, png : 4mo max</p>
+						</div>
+						<form id="editor-form">
+							<label for="title">Titre</label>
+							<input type="text" name="title" id="title" required>
+							<label for="category">Catégorie</label>
+							<div class="select-wrap">
+								<i class="fa-solid fa-chevron-down"></i>
+								<select name="category" id="category" required>
+								</select>
+							</div>
+						</form>
+					</div>
+					<div class="modalcontents">
+						<hr>
+						<input class="valider-photo" type="button" name="Valider" value="Valider">
 					</div>
 				</div>
 			</aside>

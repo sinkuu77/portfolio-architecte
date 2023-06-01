@@ -7,7 +7,13 @@ const loginLink = document.getElementById("login");
 
 const modalBtn = document.getElementById("modifier-btn-projet");
 const modal = document.getElementById("modal");
+const modalWrapper = document.getElementById("modal-wrapper");
+const modalCloseBtn = document.querySelectorAll(".fa-xmark");
+const propagation = document.querySelectorAll(".stop-propagation");
 const modalGallery = document.querySelector(".modal-gallery");
+const modalContents = document.querySelector(".modalcontents");
+const addPhotoBtn = document.querySelector(".add-photo");
+const editorWrapper = document.getElementById("editor-wrapper");
 
 let works;
 async function getWorks() {
@@ -102,10 +108,14 @@ function displayModal(event) {
   modalValue.setAttribute("aria-modal", "true");
 
   modalValue.addEventListener("click", closeModal);
-  const modalCloseBtn = document.querySelector(".fa-xmark");
-  modalCloseBtn.addEventListener("click", closeModal);
-  const propagation = document.querySelector(".stop-propagation");
-  propagation.addEventListener("click", stopPropagation);
+
+  modalCloseBtn.forEach((element) => {
+    element.addEventListener("click", closeModal);
+  });
+
+  propagation.forEach((element) => {
+    element.addEventListener("click", stopPropagation);
+  });
 
   for (i = 0; i < works.length; i++) {
     const modalWorks = works[i];
@@ -119,6 +129,7 @@ function displayModal(event) {
     arrowsIcon.className = "fa-solid fa-arrows-up-down-left-right";
     const trashIcon = document.createElement("i");
     trashIcon.className = "fa-solid fa-trash-can";
+
     trashIcon.addEventListener("click", (event) =>
       deleteWorks(modalImg, event)
     );
@@ -166,9 +177,29 @@ function deleteWorks(modalImg, event) {
         },
       }).then((response) => {
         if (response.ok) {
-          console.log(response);
         }
       });
     }
   }
 }
+
+function displayPhotoEditor(event) {
+  event.preventDefault();
+  modalWrapper.style.display = "none";
+  editorWrapper.style.display = "block";
+  modalCloseBtn.forEach((element) => {
+    element.addEventListener("click", closeModal);
+  });
+
+  propagation.forEach((element) => {
+    element.addEventListener("click", stopPropagation);
+  });
+
+  const backspace = document.querySelector(".fa-arrow-left-long");
+  backspace.addEventListener("click", () => {
+    modalWrapper.style.display = "block";
+    editorWrapper.style.display = "none";
+  });
+}
+
+addPhotoBtn.addEventListener("click", displayPhotoEditor);

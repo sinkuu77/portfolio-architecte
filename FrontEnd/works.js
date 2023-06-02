@@ -15,6 +15,8 @@ const modalContents = document.querySelector(".modalcontents");
 const addPhotoBtn = document.querySelector(".add-photo");
 const editorWrapper = document.getElementById("editor-wrapper");
 
+const imageFileInput = document.getElementById("image-upload");
+
 let works;
 async function getWorks() {
   works = await fetch(worksUrl).then((response) => response.json());
@@ -183,6 +185,24 @@ function deleteWorks(modalImg, event) {
   }
 }
 
+function printPreviewImage(event) {
+  event.preventDefault();
+  const addedImg = event.target.files[0];
+  const imgReader = new FileReader();
+  imgReader.readAsDataURL(addedImg);
+
+  imgReader.onload = (event) => {
+    const editorImg = document.querySelector(".editor-image");
+    editorImg.innerHTML = `<div id="image-preview"></div>`;
+    const imgUrl = event.target.result;
+    const imgBox = document.createElement("img");
+    imgBox.src = imgUrl;
+    const imageFileBox = document.getElementById("image-preview");
+
+    imageFileBox.appendChild(imgBox);
+  };
+}
+
 function displayPhotoEditor(event) {
   event.preventDefault();
   modalWrapper.style.display = "none";
@@ -200,6 +220,8 @@ function displayPhotoEditor(event) {
     modalWrapper.style.display = "block";
     editorWrapper.style.display = "none";
   });
+
+  imageFileInput.addEventListener("change", printPreviewImage);
 }
 
 addPhotoBtn.addEventListener("click", displayPhotoEditor);

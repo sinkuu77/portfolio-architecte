@@ -370,9 +370,11 @@ a:hover {
 }
 
 #modal-wrapper .fa-xmark:hover,
-#editor-wrapper .fa-xmark:hover {
+#editor-wrapper .fa-xmark:hover,
+.fa-arrow-left-long:hover {
 	cursor: pointer;
 }
+
 
 #modal-wrapper input {
 	border: none;
@@ -408,6 +410,7 @@ a:hover {
 
 #editor-wrapper .valider-photo:hover {
 	cursor: pointer;
+	background-color: #1D6154;
 }
 
 .editor-image {
@@ -457,12 +460,20 @@ a:hover {
 	padding-bottom: 20px;
 }
 
+#image-preview img {
+	width: 129px;
+	height: 169px;
+}
+
 #editor-form label {
 	margin-bottom: 20px;
 }
 
 #editor-form #title {
 	margin-bottom: 20px;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	padding-left: 16px;
 }
 
 .select-wrap {

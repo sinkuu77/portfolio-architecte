@@ -16,6 +16,7 @@ const addPhotoBtn = document.querySelector(".add-photo");
 const editorWrapper = document.getElementById("editor-wrapper");
 
 const imageFileInput = document.getElementById("image-upload");
+const editorCategoryIcon = document.querySelector(".fa-chevron-down");
 
 let works;
 async function getWorks() {
@@ -203,6 +204,26 @@ function printPreviewImage(event) {
   };
 }
 
+function printCategoryList() {
+  let categorylist = [];
+  for (i = 0; i < works.length; i++) {
+    if (categorylist.includes(works[i].category.name) === false) {
+      categorylist.push(works[i].category.name);
+    }
+  }
+
+  for (list of categorylist) {
+    console.log(categorylist);
+    const categorySelect = document.getElementById("category");
+    const categoryOption = document.createElement("option");
+    categoryOption.innerHTML = list;
+    categoryOption.value = list;
+
+    categorySelect.appendChild(categoryOption);
+  }
+  editorCategoryIcon.removeEventListener("click", printCategoryList);
+}
+
 function displayPhotoEditor(event) {
   event.preventDefault();
   modalWrapper.style.display = "none";
@@ -225,3 +246,4 @@ function displayPhotoEditor(event) {
 }
 
 addPhotoBtn.addEventListener("click", displayPhotoEditor);
+editorCategoryIcon.addEventListener("click", printCategoryList);

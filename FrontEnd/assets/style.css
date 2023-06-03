@@ -488,6 +488,11 @@ a:hover {
 	right: 21px;
 	background: transparent;
 	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+}
+
+.active {
+	transform: rotate(180deg);
 }
 
 .select-wrap select {

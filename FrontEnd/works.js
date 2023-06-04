@@ -16,7 +16,7 @@ const addPhotoBtn = document.querySelector(".add-photo");
 const editorWrapper = document.getElementById("editor-wrapper");
 
 const imageFileInput = document.getElementById("image-upload");
-const editorCategoryIcon = document.querySelector(".fa-chevron-down");
+const categorySelect = document.getElementById("category");
 
 let works;
 async function getWorks() {
@@ -213,15 +213,14 @@ function printCategoryList() {
   }
 
   for (list of categorylist) {
-    console.log(categorylist);
-    const categorySelect = document.getElementById("category");
     const categoryOption = document.createElement("option");
     categoryOption.innerHTML = list;
     categoryOption.value = list;
 
     categorySelect.appendChild(categoryOption);
   }
-  editorCategoryIcon.removeEventListener("click", printCategoryList);
+
+  categorySelect.removeEventListener("click", printCategoryList);
 }
 
 function displayPhotoEditor(event) {
@@ -246,4 +245,4 @@ function displayPhotoEditor(event) {
 }
 
 addPhotoBtn.addEventListener("click", displayPhotoEditor);
-editorCategoryIcon.addEventListener("click", printCategoryList);
+categorySelect.addEventListener("click", printCategoryList);

@@ -340,7 +340,7 @@ a:hover {
 
 .modal {
 	position: fixed;
-	display: none;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	top: 0;
@@ -348,7 +348,19 @@ a:hover {
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.8);
+	animation: fadeIn .3s both;
 }
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
 
 #modal-wrapper,
 #editor-wrapper {

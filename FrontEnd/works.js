@@ -16,7 +16,9 @@ const addPhotoBtn = document.querySelector(".add-photo");
 const editorWrapper = document.getElementById("editor-wrapper");
 
 const imageFileInput = document.getElementById("image-upload");
+const titleInput = document.getElementById("title");
 const categorySelect = document.getElementById("category");
+const validateBtn = document.querySelector(".valider-photo");
 
 let works;
 async function getWorks() {
@@ -102,11 +104,17 @@ filtre.addEventListener("click", filterWorks);
 loginLink.addEventListener("click", clearLocalStorage);
 
 let modalValue = null;
+const focusableSelector = "button, i, a, input, textarea";
+let focusables = [];
+let previouslyFocusedElement = null;
 
 function displayModal(event) {
   event.preventDefault();
   modalValue = document.querySelector(event.target.getAttribute("href"));
-  modalValue.style.display = "flex";
+  focusables = Array.from(modalValue.querySelectorAll(focusableSelector));
+  previouslyFocusedElement = document.querySelector(":focus");
+  modalValue.style.display = null;
+  focusables[0].focus();
   modalValue.removeAttribute("aria-hidden");
   modalValue.setAttribute("aria-modal", "true");
 
@@ -132,10 +140,9 @@ function displayModal(event) {
     arrowsIcon.className = "fa-solid fa-arrows-up-down-left-right";
     const trashIcon = document.createElement("i");
     trashIcon.className = "fa-solid fa-trash-can";
+    trashIcon.setAttribute("data-id", modalWorks.id);
 
-    trashIcon.addEventListener("click", (event) =>
-      deleteWorks(modalImg, event)
-    );
+    trashIcon.addEventListener("click", deleteWorks);
 
     const modalEditor = document.createElement("figcaption");
     modalEditor.innerText = "éditer";
@@ -150,10 +157,18 @@ function displayModal(event) {
 }
 
 function closeModal(event) {
+  if (modalValue === null) return;
+  if (previouslyFocusedElement !== null) previouslyFocusedElement.focus();
   event.preventDefault();
   modalValue.style.display = "none";
   modalValue.setAttribute("aria-hidden", "true");
   modalValue.removeAttribute("aria-modal");
+  modalCloseBtn.forEach((element) => {
+    element.removeEventListener("click", closeModal);
+  });
+  propagation.forEach((element) => {
+    element.removeEventListener("click", stopPropagation);
+  });
   modalValue = null;
   modalGallery.innerHTML = "";
 }
@@ -162,65 +177,52 @@ function stopPropagation(event) {
   event.stopPropagation();
 }
 
+function focusInModal(event) {
+  event.preventDefault();
+  let index = focusables.findIndex(
+    (f) => f === modalValue.querySelector(":focus")
+  );
+  if (event.shiftkey === true) {
+    index--;
+  } else {
+    index++;
+  }
+  if (index >= focusables.length) {
+    index = 0;
+  }
+  if (index < 0) {
+    index = focusables.length - 1;
+  }
+  focusables[index].focus();
+}
+
 modalBtn.addEventListener("click", displayModal);
 
-function deleteWorks(modalImg, event) {
-  event.stopPropagation();
-  let id;
-  for (i = 0; i < works.length; i++) {
-    let clickedSource = modalImg.src;
-    let comparedSource = works[i].imageUrl;
-    if (clickedSource == comparedSource) {
-      id = works[i].id;
-      fetch(worksUrl + "/" + id, {
-        method: "DELETE",
-        headers: {
-          Accept: "application.json, */*",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      }).then((response) => {
-        if (response.ok) {
-        }
-      });
-    }
+function printKeydown(event) {
+  if (event.key === "Escape" || event.key === "Esc") {
+    closeModal(event);
+  }
+  if (event.key === "Tab" && modalValue !== null) {
+    focusInModal(event);
   }
 }
 
-function printPreviewImage(event) {
+window.addEventListener("keydown", printKeydown);
+
+function deleteWorks(event) {
   event.preventDefault();
-  const addedImg = event.target.files[0];
-  const imgReader = new FileReader();
-  imgReader.readAsDataURL(addedImg);
-
-  imgReader.onload = (event) => {
-    const editorImg = document.querySelector(".editor-image");
-    editorImg.innerHTML = `<div id="image-preview"></div>`;
-    const imgUrl = event.target.result;
-    const imgBox = document.createElement("img");
-    imgBox.src = imgUrl;
-    const imageFileBox = document.getElementById("image-preview");
-
-    imageFileBox.appendChild(imgBox);
-  };
-}
-
-function printCategoryList() {
-  let categorylist = [];
-  for (i = 0; i < works.length; i++) {
-    if (categorylist.includes(works[i].category.name) === false) {
-      categorylist.push(works[i].category.name);
+  let workId = parseInt(event.target.getAttribute("data-id"));
+  fetch(worksUrl + "/" + workId, {
+    method: "DELETE",
+    headers: {
+      accept: "application.json, */*",
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  }).then((response) => {
+    if (response.ok) {
+      console.log("deleted");
     }
-  }
-
-  for (list of categorylist) {
-    const categoryOption = document.createElement("option");
-    categoryOption.innerHTML = list;
-    categoryOption.value = list;
-
-    categorySelect.appendChild(categoryOption);
-  }
-
-  categorySelect.removeEventListener("click", printCategoryList);
+  });
 }
 
 function displayPhotoEditor(event) {
@@ -245,4 +247,95 @@ function displayPhotoEditor(event) {
 }
 
 addPhotoBtn.addEventListener("click", displayPhotoEditor);
+
+function printPreviewImage(event) {
+  event.preventDefault();
+  addedImg = event.target.files[0];
+  const imgReader = new FileReader();
+  imgReader.readAsDataURL(addedImg);
+
+  imgReader.onload = (event) => {
+    const editorImg = document.querySelector(".editor-image");
+    editorImg.innerHTML = `<div id="image-preview"></div>`;
+    const imgUrl = event.target.result;
+    const imgBox = document.createElement("img");
+    imgBox.src = imgUrl;
+    const imageFileBox = document.getElementById("image-preview");
+
+    imageFileBox.appendChild(imgBox);
+    convertUrlToFile(imgUrl);
+  };
+}
+
+let file;
+function convertUrlToFile(url) {
+  let urlArray = url.split(",");
+  let imageType = urlArray[0].match(/:(.*?);/)[1];
+  let imageData = urlArray[1];
+  let decodedData = atob(imageData);
+  let dataLength = decodedData.length;
+  let dataArray = new Uint8Array(dataLength);
+
+  while (dataLength--) {
+    dataArray[dataLength] = decodedData.charCodeAt(dataLength);
+  }
+
+  file = new File([dataArray], "file", { type: imageType });
+
+  return file;
+}
+
+function printCategoryList() {
+  let categorylist = [];
+  const categoryloaded = async () => {
+    let categories = await fetch(categoriesUrl).then((response) =>
+      response.json()
+    );
+    for (i = 0; i < categories.length; i++) {
+      if (categorylist.includes(categories[i]) === false) {
+        categorylist.push(categories[i]);
+      }
+    }
+    for (list of categorylist) {
+      const categoryOption = document.createElement("option");
+      categoryOption.innerHTML = list.name;
+      categoryOption.value = list.id;
+
+      categorySelect.appendChild(categoryOption);
+    }
+  };
+  categoryloaded();
+
+  categorySelect.removeEventListener("click", printCategoryList);
+}
+
 categorySelect.addEventListener("click", printCategoryList);
+
+function postWorks(event) {
+  event.preventDefault();
+  const image = file;
+  const title = titleInput.value;
+  const category = categorySelect.value;
+
+  const data = {
+    image: image,
+    title: title,
+    category: category,
+  };
+
+  let formData = new FormData();
+  formData.append("image", data.image);
+  formData.append("title", data.title);
+  formData.append("category", data.category);
+
+  fetch(worksUrl, {
+    method: "POST",
+    header: {
+      accept: "*/*",
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+    body: formData,
+  }).then((response) => response.json());
+}
+
+validateBtn.addEventListener("click", postWorks);

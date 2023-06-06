@@ -127,7 +127,11 @@ function displayModal(event) {
   propagation.forEach((element) => {
     element.addEventListener("click", stopPropagation);
   });
+  printModalContents(works);
+}
 
+function printModalContents(works) {
+  modalGallery.innerHTML = "";
   for (i = 0; i < works.length; i++) {
     const modalWorks = works[i];
     const modalFigure = document.createElement("figure");
@@ -220,7 +224,17 @@ function deleteWorks(event) {
     },
   }).then((response) => {
     if (response.ok) {
-      console.log("deleted");
+      let restOfWorks = [];
+      let copiedWorks = works;
+      console.log(copiedWorks);
+      for (i = 0; i < copiedWorks.length; i++) {
+        if (copiedWorks[i].id !== workId) {
+          restOfWorks.push(copiedWorks[i]);
+        }
+      }
+      works = restOfWorks;
+      printModalContents(restOfWorks);
+      displayWorks(restOfWorks);
     }
   });
 }
@@ -335,7 +349,11 @@ function postWorks(event) {
       Authorization: "Bearer " + localStorage.getItem("token"),
     },
     body: formData,
-  }).then((response) => response.json());
+  }).then((reponse) => {
+    if (response.ok) {
+      console.log(sended);
+    }
+  });
 }
 
-validateBtn.addEventListener("click", postWorks);
+validateBtn.addEventListener("submit", postWorks);

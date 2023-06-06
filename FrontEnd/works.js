@@ -15,6 +15,8 @@ const modalContents = document.querySelector(".modalcontents");
 const addPhotoBtn = document.querySelector(".add-photo");
 const editorWrapper = document.getElementById("editor-wrapper");
 
+const deleteAll = document.getElementById("delete-all");
+
 const imageFileInput = document.getElementById("image-upload");
 const titleInput = document.getElementById("title");
 const categorySelect = document.getElementById("category");
@@ -226,7 +228,6 @@ function deleteWorks(event) {
     if (response.ok) {
       let restOfWorks = [];
       let copiedWorks = works;
-      console.log(copiedWorks);
       for (i = 0; i < copiedWorks.length; i++) {
         if (copiedWorks[i].id !== workId) {
           restOfWorks.push(copiedWorks[i]);
@@ -238,6 +239,30 @@ function deleteWorks(event) {
     }
   });
 }
+
+function deleteAllOfWorks(event) {
+  event.preventDefault();
+  let i = 0;
+  while (i < works.length) {
+    let workId = works[i].id;
+    fetch(worksUrl + "/" + workId, {
+      method: "DELETE",
+      headers: {
+        accept: "application.json, */*",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }).then((response) => {
+      if (response.ok) {
+        works = [];
+        printModalContents(works);
+        displayWorks(works);
+      }
+    });
+    i++;
+  }
+}
+
+deleteAll.addEventListener("click", deleteAllOfWorks);
 
 function displayPhotoEditor(event) {
   event.preventDefault();
@@ -342,6 +367,8 @@ function postWorks(event) {
   formData.append("title", data.title);
   formData.append("category", data.category);
 
+  console.log(file);
+
   fetch(worksUrl, {
     method: "POST",
     header: {
@@ -349,11 +376,11 @@ function postWorks(event) {
       Authorization: "Bearer " + localStorage.getItem("token"),
     },
     body: formData,
-  }).then((reponse) => {
+  }).then((response) => {
     if (response.ok) {
       console.log(sended);
     }
   });
 }
 
-validateBtn.addEventListener("submit", postWorks);
+validateBtn.addEventListener("click", postWorks);

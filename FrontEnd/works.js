@@ -22,6 +22,8 @@ const titleInput = document.getElementById("title");
 const categorySelect = document.getElementById("category");
 const validateBtn = document.querySelector(".valider-photo");
 
+const validMessage = document.querySelector(".message");
+
 let works;
 async function getWorks() {
   works = await fetch(worksUrl).then((response) => response.json());
@@ -112,6 +114,7 @@ let previouslyFocusedElement = null;
 
 function displayModal(event) {
   event.preventDefault();
+  validMessage.classList.remove("active");
   modalValue = document.querySelector(event.target.getAttribute("href"));
   focusables = Array.from(modalValue.querySelectorAll(focusableSelector));
   previouslyFocusedElement = document.querySelector(":focus");
@@ -176,6 +179,11 @@ function closeModal() {
   });
   modalValue = null;
   modalGallery.innerHTML = "";
+  editorImg.style.display = "flex";
+  imageFileBox.style.display = "none";
+  imageFileBox.removeChild(imgBox);
+  titleInput.value = null;
+  categorySelect.value = null;
 }
 
 function stopPropagation(event) {
@@ -286,9 +294,15 @@ function displayPhotoEditor(event) {
 
 addPhotoBtn.addEventListener("click", displayPhotoEditor);
 
-let editorImg, imageFileBox;
+let editorImg, imageFileBox, imgBox;
 function printPreviewImage(event) {
   event.preventDefault();
+  const fileSizeInBytes = event.target.files[0].size;
+  const bytesToMega = fileSizeInBytes / Math.pow(1024, 2);
+  const fileError = document.getElementById("image-error");
+  if (bytesToMega > 4) {
+    return (fileError.style.display = "block");
+  }
   addedImg = event.target.files[0];
   const imgReader = new FileReader();
   imgReader.readAsDataURL(addedImg);
@@ -299,7 +313,7 @@ function printPreviewImage(event) {
     editorImg.style.display = "none";
     imageFileBox.style.display = "flex";
     const imgUrl = event.target.result;
-    const imgBox = document.createElement("img");
+    imgBox = document.createElement("img");
     imgBox.src = imgUrl;
     imageFileBox.appendChild(imgBox);
     convertUrlToFile(imgUrl);
@@ -377,11 +391,8 @@ function postWorks(event) {
   }).then((response) => {
     if (response.ok) {
       getWorks();
+      validMessage.classList.toggle("active");
       closeModal();
-      editorImg.style.display = "flex";
-      imageFileBox.style.display = "none";
-      titleInput.value = null;
-      categorySelect.value = null;
     } else {
       alert("veuillez remplir tous les champs");
     }

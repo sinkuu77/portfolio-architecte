@@ -338,6 +338,38 @@ a:hover {
 	color: #ffffff;
 }
 
+.message {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto 20px;
+	background-image: linear-gradient(to right, #0f6224, #136c29, #16752e, #1a7f33, #1d8938);
+	border-radius: 5px;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
+	color: #ffffff;
+	width: 250px;
+	height: 37px;
+	transform: scaleZ(0);
+	animation: message 3s ease-in-out;
+}
+
+@keyframes message {
+	0% {
+		transform: scaleZ(1);
+		opacity: 1;
+	}
+
+
+	100% {
+		transform: scaleZ(0);
+		opacity: 0;
+	}
+}
+
+.active {
+	display: flex;
+}
+
 .modal {
 	position: fixed;
 	display: flex;
@@ -445,6 +477,12 @@ a:hover {
 	padding: 13px 0;
 	font-size: 58px;
 	color: #B9C5CC;
+}
+
+#image-error {
+	display: none;
+	font-size: 12px;
+	color: #D65353;
 }
 
 .filebox {

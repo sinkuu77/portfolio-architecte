@@ -425,7 +425,8 @@ a:hover {
 	background-color: #1D6154;
 }
 
-.editor-image {
+.editor-image,
+#image-preview {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -434,6 +435,10 @@ a:hover {
 	border-radius: 3px;
 	width: 420px;
 	height: 169px;
+}
+
+#image-preview {
+	display: none;
 }
 
 .editor-image i {

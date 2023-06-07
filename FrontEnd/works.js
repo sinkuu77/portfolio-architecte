@@ -162,10 +162,9 @@ function printModalContents(works) {
   }
 }
 
-function closeModal(event) {
+function closeModal() {
   if (modalValue === null) return;
   if (previouslyFocusedElement !== null) previouslyFocusedElement.focus();
-  event.preventDefault();
   modalValue.style.display = "none";
   modalValue.setAttribute("aria-hidden", "true");
   modalValue.removeAttribute("aria-modal");
@@ -287,6 +286,7 @@ function displayPhotoEditor(event) {
 
 addPhotoBtn.addEventListener("click", displayPhotoEditor);
 
+let editorImg, imageFileBox;
 function printPreviewImage(event) {
   event.preventDefault();
   addedImg = event.target.files[0];
@@ -294,13 +294,13 @@ function printPreviewImage(event) {
   imgReader.readAsDataURL(addedImg);
 
   imgReader.onload = (event) => {
-    const editorImg = document.querySelector(".editor-image");
-    editorImg.innerHTML = `<div id="image-preview"></div>`;
+    editorImg = document.querySelector(".editor-image");
+    imageFileBox = document.getElementById("image-preview");
+    editorImg.style.display = "none";
+    imageFileBox.style.display = "flex";
     const imgUrl = event.target.result;
     const imgBox = document.createElement("img");
     imgBox.src = imgUrl;
-    const imageFileBox = document.getElementById("image-preview");
-
     imageFileBox.appendChild(imgBox);
     convertUrlToFile(imgUrl);
   };
@@ -367,18 +367,23 @@ function postWorks(event) {
   formData.append("title", data.title);
   formData.append("category", data.category);
 
-  console.log(file);
-
   fetch(worksUrl, {
     method: "POST",
-    header: {
+    headers: {
       accept: "*/*",
       Authorization: "Bearer " + localStorage.getItem("token"),
     },
     body: formData,
   }).then((response) => {
     if (response.ok) {
-      console.log(sended);
+      getWorks();
+      closeModal();
+      editorImg.style.display = "flex";
+      imageFileBox.style.display = "none";
+      titleInput.value = null;
+      categorySelect.value = null;
+    } else {
+      alert("veuillez remplir tous les champs");
     }
   });
 }

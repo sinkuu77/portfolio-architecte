@@ -179,11 +179,6 @@ function closeModal() {
   });
   modalValue = null;
   modalGallery.innerHTML = "";
-  editorImg.style.display = "flex";
-  imageFileBox.style.display = "none";
-  imageFileBox.removeChild(imgBox);
-  titleInput.value = null;
-  categorySelect.value = null;
 }
 
 function stopPropagation(event) {
@@ -334,7 +329,6 @@ function convertUrlToFile(url) {
   }
 
   file = new File([dataArray], "file", { type: imageType });
-
   return file;
 }
 
@@ -393,6 +387,11 @@ function postWorks(event) {
       getWorks();
       validMessage.classList.toggle("active");
       closeModal();
+      editorImg.style.display = "flex";
+      imageFileBox.style.display = "none";
+      imageFileBox.removeChild(imgBox);
+      titleInput.value = null;
+      categorySelect.value = null;
     } else {
       alert("veuillez remplir tous les champs");
     }

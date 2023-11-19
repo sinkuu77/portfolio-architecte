@@ -24,7 +24,7 @@ npm start
 
 Projet 5 - Créez une page web dynamique avec JavaScript (OpenClassrooms)
 
-<img src="https://i.ibb.co/J5ZmRFN/portfolio.webp" />
+<img src="https://i.ibb.co/nwx21XM/2.png" />
 
 ## le délai de production du site
 16.05.23 - 10.06.23

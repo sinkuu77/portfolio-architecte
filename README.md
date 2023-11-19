@@ -27,15 +27,15 @@ Projet 5 - Créez une page web dynamique avec JavaScript (OpenClassrooms)
 <img src="https://i.ibb.co/J5ZmRFN/portfolio.webp" />
 
 ## le délai de production du site
-.23 - .23
+16.05.23 - 10.06.23
 
 ## Stack utilisé
 JavaScript
 
 ## Point
-L'objectif de ce projet était de concevoir une page d'accueil en adoptant une approche Mobile First et d'incorporer des animations en utilisant Sass.
+L'objectif de ce projet était de concevoir un site dynamique en utilisant JavaScript. Au cours de ce projet, j'ai eu l'occasion d'apprendre à effectuer des requêtes vers le serveur, notamment les méthodes GET, POST et DELETE via l'API.
 
 ## Problème en réalisant ce projet
-<p>Il y avait une mission où je devais implémenter un loader de page sans utiliser JavaScript. </p>
-<p>C'est-à-dire que je devais résoudre ce problème uniquement avec CSS. Il fallait que le spinner tourne pendant quelques secondes puis disparaisse de la page. </p>
-<p>En parcourant les différentes propriétés de transformation CSS sur MDN, j'ai découvert 'scaleZ', ce qui m'a permis de résoudre le problème. </p>
+<p>Il était difficile d'implémenter le processus de conversion d'une URL d'image téléchargée par l'utilisateur en un fichier pour l'envoyer en tant que requête POST au serveur. </p>
+<p>J'ai trouvé de l'aide en consultant un autre utilisateur qui avait des problèmes similaires sur Stack Overflow. </p>
+<p>Grâce à cette publication, j'ai appris qu'il fallait séparer l'URL en type et en données, puis utiliser la fonction 'atob' pour décoder les données et les convertir en un tableau d'octets.</p>

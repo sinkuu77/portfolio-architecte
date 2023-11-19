@@ -6,11 +6,11 @@
 * **Pour exécuter le serveur**
 <p>Cloner le repo en local</p>
 
-```
+```bash
 cd Backend
-```
 
-```
+npm install
+
 npm start
 ```
 
